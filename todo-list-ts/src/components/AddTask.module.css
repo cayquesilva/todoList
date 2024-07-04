@@ -9,7 +9,7 @@
 }
 
 .input{
-    background: var(--gray-500);
+    background: var(--gray-400);
     border: 0;
     resize: none;
     height: 3rem;
