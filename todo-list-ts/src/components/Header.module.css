@@ -1,0 +1,14 @@
+header{
+    text-align: center;
+    background: var(--gray-700);
+    height: 200px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+span{
+    font-weight: bold;
+    font-size: 40px;
+    color: var(--purple-dark);
+}

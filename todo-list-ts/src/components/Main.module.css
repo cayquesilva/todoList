@@ -1,0 +1,46 @@
+.main{
+    width: 100vw;
+    height: calc(100vh - 200px);
+    background: var(--gray-400);
+    display: flex;
+    justify-content: center;
+}
+
+.add_comment{
+    min-width: 300px;
+    width: 60%;
+    display: flex;
+    justify-content: center;
+    gap: 0.3rem;
+    margin-top: -1.5rem;
+}
+
+.input{
+    background: var(--gray-500);
+    border: 0;
+    resize: none;
+    height: 3rem;
+    width: 60%;
+    padding: 1rem;
+    border-radius: 8px;
+    color: var(--gray-200);
+    line-height: 1.6;
+}
+
+button[type=submit]{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0rem 1.5rem;
+    border-radius: 8px;
+    height: 3rem;
+    border: 0;
+    background: var(--blue-dark);
+    color: var(--white);
+    font-weight: 400;
+    cursor: pointer;
+    text-align: center;
+    line-height: 1.6;
+
+}
