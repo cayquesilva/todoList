@@ -9,9 +9,10 @@ interface TaskItensProps {
         isComplete: boolean
     }[],
     onChangeCompleteStatus: (id: string) => void;
+    onDeleteTask: (id: string) => void;
 }
 
-export function TaskItens({ tasks, onChangeCompleteStatus }: TaskItensProps) {
+export function TaskItens({ tasks, onChangeCompleteStatus, onDeleteTask }: TaskItensProps) {
 
     return (
         <div className={style.flex}>
@@ -30,6 +31,7 @@ export function TaskItens({ tasks, onChangeCompleteStatus }: TaskItensProps) {
                         isComplete={task.isComplete}
                         title={task.title}
                         onChangeCompleteStatus={() => onChangeCompleteStatus(task.id)}
+                        onDeleteTask={() => onDeleteTask(task.id)}
                     />
                 ))
             )}

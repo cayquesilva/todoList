@@ -22,3 +22,9 @@
     cursor: pointer;
     box-shadow: none;
 }
+
+.completed{
+    text-decoration: line-through;
+    color: var(--gray-300)
+}
+
