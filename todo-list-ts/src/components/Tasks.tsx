@@ -15,7 +15,8 @@ export function Tasks() {
         setTitulo(e.target.value);
     }
     
-    function handleOnSubmit() {
+    function handleOnSubmit(e: { preventDefault: () => void; }) {
+        e.preventDefault();
         const newTask = {
             id: uuidv4(),
             title: titulo,
@@ -47,8 +48,18 @@ export function Tasks() {
     return (
         <>
             <div className={style.add_comment}>
-                <input type="text" onChange={handleChangeTitulo} value={titulo} className={style.input} placeholder='Adicione uma nova tarefa' />
-                <button type='submit' onClick={handleOnSubmit}>Criar <PlusCircle size={18} weight="bold" /></button>
+                <form className={style.form_comment} onSubmit={handleOnSubmit}>
+                    <input 
+                        type="text" 
+                        onChange={handleChangeTitulo} 
+                        value={titulo} 
+                        className={style.input} 
+                        placeholder='Adicione uma nova tarefa' 
+                    />
+                    <button type='submit'>
+                        Criar <PlusCircle size={18} weight="bold" />
+                    </button>
+                </form>
             </div>
             <div className={style.tasks}>
                 <TaskHeader qtdTarefas={totalTasks} qtdConcluidas={completedTasks}/>

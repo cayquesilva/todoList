@@ -12,3 +12,8 @@ span{
     font-size: 40px;
     color: var(--purple-dark);
 }
+
+img{
+    height: 3rem;
+    margin-right: 1rem;
+}

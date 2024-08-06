@@ -1,11 +1,10 @@
 import styles from './Header.module.css'
-import { ListChecks } from '@phosphor-icons/react';
 
 export function Header(){
     return (
         <header className={styles.header}>
-            <ListChecks size={32} weight="fill" color="#4EA8DE"/>
-            <span>todo</span>
+            <img src="./tasks.svg" alt="tasks" className={styles.img}/>
+            <span>Minhas Tarefas</span>
         </header>
     );
 }
