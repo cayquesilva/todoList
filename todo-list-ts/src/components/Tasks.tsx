@@ -1,13 +1,13 @@
+import { TaskHeader } from "./TasksHeader";
 import style from './Tasks.module.css';
+import { TaskItens } from "./TasksItens";
 
 export function Tasks(){
     return(
         <>
-            <div className={style.list}>
-                <div className={style.header}>
-                    <h4>Tarefas criadas</h4>
-                    <h4>Concluídas</h4>
-                </div>
+            <div className={style.tasks}>
+                <TaskHeader/>
+                <TaskItens/>
             </div>
         </>
     )

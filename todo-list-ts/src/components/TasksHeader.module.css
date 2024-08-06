@@ -1,0 +1,30 @@
+.list{
+    display: flex;
+    flex: 1;
+    gap: 0.3rem;
+    justify-content: space-between;
+}
+
+.flex{
+    display: flex;
+    align-items: center;
+}
+
+
+.textblue{
+    color: var(--blue)
+}
+
+.textpurple{
+    color: var(--purple)
+}
+
+.badge{
+    margin-left: 5px;
+    padding: 0 10px;
+    border-radius: 10px;
+    font-size: 12px;
+    font-weight: bold;
+    color: var(--gray-200);
+    background: var(--gray-400);
+}
