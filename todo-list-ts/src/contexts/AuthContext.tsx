@@ -1,79 +1,72 @@
-import { createContext, useContext, useEffect, useState, ReactNode } from 'react'
-import { User, Session } from '@supabase/supabase-js'
-import { supabase } from '../lib/supabase'
+import { createContext, useContext, useEffect, useState, ReactNode } from 'react';
+import { apiClient, User } from '../lib/api';
 
 interface AuthContextType {
-  user: User | null
-  session: Session | null
-  loading: boolean
-  signUp: (email: string, password: string) => Promise<{ error: any }>
-  signIn: (email: string, password: string) => Promise<{ error: any }>
-  signOut: () => Promise<void>
+  user: User | null;
+  loading: boolean;
+  signUp: (email: string, password: string) => Promise<{ error?: string }>;
+  signIn: (email: string, password: string) => Promise<{ error?: string }>;
+  signOut: () => void;
 }
 
-const AuthContext = createContext<AuthContextType | undefined>(undefined)
+const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export function AuthProvider({ children }: { children: ReactNode }) {
-  const [user, setUser] = useState<User | null>(null)
-  const [session, setSession] = useState<Session | null>(null)
-  const [loading, setLoading] = useState(true)
+  const [user, setUser] = useState<User | null>(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Get initial session
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      setSession(session)
-      setUser(session?.user ?? null)
-      setLoading(false)
-    })
-
-    // Listen for auth changes
-    const {
-      data: { subscription },
-    } = supabase.auth.onAuthStateChange((_event, session) => {
-      setSession(session)
-      setUser(session?.user ?? null)
-      setLoading(false)
-    })
-
-    return () => subscription.unsubscribe()
-  }, [])
+    // Verificar se há token salvo e validar
+    const token = localStorage.getItem('token');
+    if (token) {
+      // Aqui você poderia fazer uma requisição para validar o token
+      // Por simplicidade, vamos apenas verificar se existe
+      setLoading(false);
+    } else {
+      setLoading(false);
+    }
+  }, []);
 
   const signUp = async (email: string, password: string) => {
-    const { error } = await supabase.auth.signUp({
-      email,
-      password,
-    })
-    return { error }
-  }
+    try {
+      const response = await apiClient.register(email, password);
+      setUser(response.user);
+      return {};
+    } catch (error) {
+      return { error: (error as Error).message };
+    }
+  };
 
   const signIn = async (email: string, password: string) => {
-    const { error } = await supabase.auth.signInWithPassword({
-      email,
-      password,
-    })
-    return { error }
-  }
+    try {
+      const response = await apiClient.login(email, password);
+      setUser(response.user);
+      return {};
+    } catch (error) {
+      return { error: (error as Error).message };
+    }
+  };
 
-  const signOut = async () => {
-    await supabase.auth.signOut()
-  }
+  const signOut = () => {
+    apiClient.logout();
+    setUser(null);
+  };
 
   const value = {
     user,
-    session,
     loading,
     signUp,
     signIn,
     signOut,
-  }
+  };
 
-  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
 
 export function useAuth() {
-  const context = useContext(AuthContext)
+  const context = useContext(AuthContext);
   if (context === undefined) {
-    throw new Error('useAuth must be used within an AuthProvider')
+    throw new Error('useAuth must be used within an AuthProvider');
   }
-  return context
+  return context;
 }

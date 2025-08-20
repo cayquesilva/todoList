@@ -22,10 +22,12 @@ export function Auth() {
         : await signIn(email, password)
 
       if (error) {
-        setMessage(error.message)
+        setMessage(error)
       } else if (isSignUp) {
         setMessage('Conta criada com sucesso! Você já pode fazer login.')
         setIsSignUp(false)
+        setEmail('')
+        setPassword('')
       }
     } catch (error) {
       setMessage('Ocorreu um erro inesperado')
@@ -79,6 +81,8 @@ export function Auth() {
           onClick={() => {
             setIsSignUp(!isSignUp)
             setMessage('')
+            setEmail('')
+            setPassword('')
           }}
           className={style.toggleButton}
         >

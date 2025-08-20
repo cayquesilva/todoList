@@ -1,32 +1,27 @@
-{
-  "name": "todo-list-ts",
-  "private": true,
-  "version": "0.0.0",
-  "type": "module",
-  "scripts": {
-    "dev": "vite",
-    "build": "tsc -b && vite build",
-    "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
-    "preview": "vite preview"
-  },
-  "dependencies": {
-    "@phosphor-icons/react": "^2.1.7",
-    "@supabase/supabase-js": "^2.55.0",
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1",
-    "uuid": "^10.0.0"
-  },
-  "devDependencies": {
-    "@types/react": "^18.3.3",
-    "@types/react-dom": "^18.3.0",
-    "@types/uuid": "^10.0.0",
-    "@typescript-eslint/eslint-plugin": "^7.13.1",
-    "@typescript-eslint/parser": "^7.13.1",
-    "@vitejs/plugin-react": "^4.3.1",
-    "eslint": "^8.57.0",
-    "eslint-plugin-react-hooks": "^4.6.2",
-    "eslint-plugin-react-refresh": "^0.4.7",
-    "typescript": "^5.2.2",
-    "vite": "^5.3.1"
-  }
+import { useAuth } from '../contexts/AuthContext'
+import { SignOut } from '@phosphor-icons/react'
+import styles from './Header.module.css'
+
+export function Header(){
+    const { user, signOut } = useAuth()
+
+    const handleSignOut = async () => {
+        await signOut()
+    }
+
+    return (
+        <header className={styles.header}>
+            <img src="./tasks.svg" alt="tasks" className={styles.img}/>
+            <span>Minhas Tarefas</span>
+            {user && (
+                <div className={styles.userInfo}>
+                    <span className={styles.userEmail}>{user.email}</span>
+                    <button onClick={handleSignOut} className={styles.signOutButton}>
+                        <SignOut size={20} />
+                        Sair
+                    </button>
+                </div>
+            )}
+        </header>
+    );
 }

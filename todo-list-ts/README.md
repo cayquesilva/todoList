@@ -1,30 +1,46 @@
-# React + TypeScript + Vite
+import { useAuth } from '../contexts/AuthContext'
+import { SignOut } from '@phosphor-icons/react'
+import { useAuth } from '../contexts/AuthContext'
+import { SignOut } from '@phosphor-icons/react'
+import styles from './Header.module.css'
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+export function Header(){
+    const { user, signOut } = useAuth()
 
-Currently, two official plugins are available:
+    const handleSignOut = async () => {
+        await signOut()
+    }
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+    const { user, signOut } = useAuth()
 
-## Expanding the ESLint configuration
+    const handleSignOut = async () => {
+        await signOut()
+    }
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+    return (
+        <header className={styles.header}>
+            <img src="./tasks.svg" alt="tasks" className={styles.img}/>
+            <span>Minhas Tarefas</span>
+            {user && (
+                <div className={styles.userInfo}>
+                    <span className={styles.userEmail}>{user.email}</span>
+                    <button onClick={handleSignOut} className={styles.signOutButton}>
+                        <SignOut size={20} />
+                        Sair
+                    </button>
+                </div>
+            )}
+- `DELETE /api/tasks/:id` - Deletar tarefa
 
-- Configure the top-level `parserOptions` property like this:
-
-```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-  },
+            {user && (
+                <div className={styles.userInfo}>
+                    <span className={styles.userEmail}>{user.email}</span>
+                    <button onClick={handleSignOut} className={styles.signOutButton}>
+                        <SignOut size={20} />
+                        Sair
+                    </button>
+                </div>
+            )}
+        </header>
+    );
 }
-```
-
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
