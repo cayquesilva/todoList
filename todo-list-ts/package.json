@@ -1,27 +1,37 @@
-import { useAuth } from '../contexts/AuthContext'
-import { SignOut } from '@phosphor-icons/react'
-import styles from './Header.module.css'
-
-export function Header(){
-    const { user, signOut } = useAuth()
-
-    const handleSignOut = async () => {
-        await signOut()
-    }
-
-    return (
-        <header className={styles.header}>
-            <img src="./tasks.svg" alt="tasks" className={styles.img}/>
-            <span>Minhas Tarefas</span>
-            {user && (
-                <div className={styles.userInfo}>
-                    <span className={styles.userEmail}>{user.email}</span>
-                    <button onClick={handleSignOut} className={styles.signOutButton}>
-                        <SignOut size={20} />
-                        Sair
-                    </button>
-                </div>
-            )}
-        </header>
-    );
+{
+  "name": "todo-list-ts",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "dev:server": "node server/index.js",
+    "dev:full": "concurrently \"npm run dev:server\" \"npm run dev\"",
+    "build": "tsc && vite build",
+    "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@phosphor-icons/react": "^2.0.15",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  },
+  "devDependencies": {
+    "@types/react": "^18.2.43",
+    "@types/react-dom": "^18.2.17",
+    "@typescript-eslint/eslint-plugin": "^6.14.0",
+    "@typescript-eslint/parser": "^6.14.0",
+    "@vitejs/plugin-react": "^4.2.1",
+    "bcryptjs": "^2.4.3",
+    "concurrently": "^8.2.2",
+    "cors": "^2.8.5",
+    "eslint": "^8.55.0",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "eslint-plugin-react-refresh": "^0.4.5",
+    "express": "^4.18.2",
+    "jsonwebtoken": "^9.0.2",
+    "pg": "^8.11.3",
+    "typescript": "^5.2.2",
+    "vite": "^5.0.8"
+  }
 }
