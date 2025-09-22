@@ -1,27 +1,45 @@
-import { useAuth } from '../contexts/AuthContext'
-import { SignOut } from '@phosphor-icons/react'
-import styles from './Header.module.css'
+import { AuthProvider } from './contexts/AuthContext'
+import { useAuth } from './contexts/AuthContext'
+import { Auth } from './components/Auth'
+import { Header } from './components/Header'
+import { Main } from './components/Main'
+import './global.css'
 
-export function Header(){
-    const { user, signOut } = useAuth()
+function AppContent() {
+  const { user, loading } = useAuth()
 
-    const handleSignOut = async () => {
-        await signOut()
-    }
-
+  if (loading) {
     return (
-        <header className={styles.header}>
-            <img src="./tasks.svg" alt="tasks" className={styles.img}/>
-            <span>Minhas Tarefas</span>
-            {user && (
-                <div className={styles.userInfo}>
-                    <span className={styles.userEmail}>{user.email}</span>
-                    <button onClick={handleSignOut} className={styles.signOutButton}>
-                        <SignOut size={20} />
-                        Sair
-                    </button>
-                </div>
-            )}
-        </header>
-    );
+      <div style={{ 
+        display: 'flex', 
+        justifyContent: 'center', 
+        alignItems: 'center', 
+        height: '100vh',
+        color: 'var(--gray-300)'
+      }}>
+        Carregando...
+      </div>
+    )
+  }
+
+  if (!user) {
+    return <Auth />
+  }
+
+  return (
+    <>
+      <Header />
+      <Main />
+    </>
+  )
 }
+
+function App() {
+  return (
+    <AuthProvider>
+      <AppContent />
+    </AuthProvider>
+  )
+}
+
+export default App

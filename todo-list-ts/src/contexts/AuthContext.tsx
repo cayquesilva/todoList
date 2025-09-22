@@ -1,56 +1,76 @@
-import { createContext, useContext, useEffect, useState, ReactNode } from 'react';
-import { apiClient, User } from '../lib/api';
+import { createContext, useContext, useEffect, useState, ReactNode } from 'react'
+import { supabase } from '../lib/supabase'
+import type { User } from '@supabase/supabase-js'
 
 interface AuthContextType {
-  user: User | null;
-  loading: boolean;
-  signUp: (email: string, password: string) => Promise<{ error?: string }>;
-  signIn: (email: string, password: string) => Promise<{ error?: string }>;
-  signOut: () => void;
+  user: User | null
+  loading: boolean
+  signUp: (email: string, password: string) => Promise<{ error?: string }>
+  signIn: (email: string, password: string) => Promise<{ error?: string }>
+  signOut: () => Promise<void>
 }
 
-const AuthContext = createContext<AuthContextType | undefined>(undefined);
+const AuthContext = createContext<AuthContextType | undefined>(undefined)
 
 export function AuthProvider({ children }: { children: ReactNode }) {
-  const [user, setUser] = useState<User | null>(null);
-  const [loading, setLoading] = useState(true);
+  const [user, setUser] = useState<User | null>(null)
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    // Verificar se há token salvo e validar
-    const token = localStorage.getItem('token');
-    if (token) {
-      // Aqui você poderia fazer uma requisição para validar o token
-      // Por simplicidade, vamos apenas verificar se existe
-      setLoading(false);
-    } else {
-      setLoading(false);
-    }
-  }, []);
+    // Verificar sessão atual
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setUser(session?.user ?? null)
+      setLoading(false)
+    })
+
+    // Escutar mudanças de autenticação
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((_event, session) => {
+      setUser(session?.user ?? null)
+      setLoading(false)
+    })
+
+    return () => subscription.unsubscribe()
+  }, [])
 
   const signUp = async (email: string, password: string) => {
     try {
-      const response = await apiClient.register(email, password);
-      setUser(response.user);
-      return {};
+      const { error } = await supabase.auth.signUp({
+        email,
+        password,
+      })
+      
+      if (error) {
+        return { error: error.message }
+      }
+      
+      return {}
     } catch (error) {
-      return { error: (error as Error).message };
+      return { error: 'Erro inesperado ao criar conta' }
     }
-  };
+  }
 
   const signIn = async (email: string, password: string) => {
     try {
-      const response = await apiClient.login(email, password);
-      setUser(response.user);
-      return {};
+      const { error } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      })
+      
+      if (error) {
+        return { error: error.message }
+      }
+      
+      return {}
     } catch (error) {
-      return { error: (error as Error).message };
+      return { error: 'Erro inesperado ao fazer login' }
     }
-  };
+  }
 
-  const signOut = () => {
-    apiClient.logout();
-    setUser(null);
-  };
+  const signOut = async () => {
+    await supabase.auth.signOut()
+  }
 
   const value = {
     user,
@@ -58,15 +78,15 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     signUp,
     signIn,
     signOut,
-  };
+  }
 
-  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
 }
 
 export function useAuth() {
-  const context = useContext(AuthContext);
+  const context = useContext(AuthContext)
   if (context === undefined) {
-    throw new Error('useAuth must be used within an AuthProvider');
+    throw new Error('useAuth must be used within an AuthProvider')
   }
-  return context;
+  return context
 }

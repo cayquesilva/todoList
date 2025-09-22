@@ -24,8 +24,7 @@ export function Auth() {
       if (error) {
         setMessage(error)
       } else if (isSignUp) {
-        setMessage('Conta criada com sucesso! Você já pode fazer login.')
-        setIsSignUp(false)
+        setMessage('Conta criada com sucesso! Verifique seu email para confirmar.')
         setEmail('')
         setPassword('')
       }
@@ -39,6 +38,11 @@ export function Auth() {
   return (
     <div className={style.container}>
       <div className={style.authBox}>
+        <div className={style.logo}>
+          <img src="./tasks.svg" alt="tasks" />
+          <h1>Minhas Tarefas</h1>
+        </div>
+        
         <h2 className={style.title}>
           {isSignUp ? 'Criar Conta' : 'Entrar'}
         </h2>

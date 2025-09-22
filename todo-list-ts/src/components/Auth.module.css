@@ -16,11 +16,31 @@
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
+.logo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 2rem;
+}
+
+.logo img {
+  width: 3rem;
+  height: 3rem;
+}
+
+.logo h1 {
+  color: var(--blue);
+  font-size: 1.5rem;
+  font-weight: 900;
+  margin: 0;
+}
+
 .title {
   color: var(--gray-100);
   text-align: center;
   margin-bottom: 2rem;
-  font-size: 1.5rem;
+  font-size: 1.25rem;
   font-weight: 600;
 }
 
@@ -73,8 +93,8 @@
 .message {
   text-align: center;
   margin: 1rem 0;
-  padding: 0.5rem;
-  border-radius: 4px;
+  padding: 0.75rem;
+  border-radius: 6px;
   font-size: 0.875rem;
 }
 
@@ -100,6 +120,7 @@
   width: 100%;
   text-align: center;
   padding: 0.5rem;
+  margin-top: 1rem;
 }
 
 .toggleButton:hover {

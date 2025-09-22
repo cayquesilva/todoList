@@ -2,7 +2,7 @@ import { useAuth } from '../contexts/AuthContext'
 import { SignOut } from '@phosphor-icons/react'
 import styles from './Header.module.css'
 
-export function Header(){
+export function Header() {
     const { user, signOut } = useAuth()
 
     const handleSignOut = async () => {
@@ -23,5 +23,5 @@ export function Header(){
                 </div>
             )}
         </header>
-    );
+    )
 }
